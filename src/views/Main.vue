@@ -84,6 +84,7 @@ export default {
     toDetailPage(index) {
       this.$store.commit("upDataDetailText", this.datas[index].id);
       this.$router.push("/detail");
+      console.log("hello")
     },
 
     logout() {
