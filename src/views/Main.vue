@@ -83,7 +83,6 @@ export default {
   methods: {
     toDetailPage(index) {
       this.$store.commit("upDataDetailText", this.datas[index].id);
-      console.log(this.datas[index].id)
       this.$router.push("/detail");
     },
 
