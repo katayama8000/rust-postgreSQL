@@ -7,9 +7,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <router-link to="/login"
-          ><v-btn class="text-center">ログイン</v-btn></router-link
-        >
+        <router-link to="/login"><v-btn class="text-center">ログイン</v-btn></router-link>
       </v-col>
     </v-row>
     <v-row>
