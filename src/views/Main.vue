@@ -8,6 +8,7 @@
         <router-link to="sell"><v-btn>出品</v-btn></router-link>
       </v-col>
       <v-btn @click="logout">logout</v-btn>
+      <!-- <v-btn @click="listen">listen</v-btn> -->
     </v-row>
     <br />
     <hr />
@@ -54,6 +55,7 @@ import { db } from "../main.js";
 //imageのimport
 import { getStorage, ref } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
+import { onSnapshot } from "firebase/firestore";
 export default {
   name: "app",
   data() {
@@ -64,20 +66,23 @@ export default {
       url: [],
       fileNames: [],
       uids: [],
-      docId:[]
+      docId: [],
     };
   },
 
   async created() {
-    this.create()
+    this.create();
+    //  onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
+    //     const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+    //     console.log(source, " data: ", doc.data().good);
+    //     //this.good = doc.data().good
+    //   });
   },
 
-  computed:{
-  },
+  computed: {},
 
-  watch:{
-    good:function(){
-    }
+  watch: {
+    good: function () {},
   },
 
   methods: {
@@ -89,7 +94,6 @@ export default {
     logout() {
       this.$store.dispatch("logout");
     },
-
 
     async create() {
       // //textの全データ取得
@@ -122,12 +126,27 @@ export default {
       try {
         this.good =this.datas[index]._document.data.value.mapValue.fields.good.integerValue;
         this.good++;
-        await updateDoc(Ref, {good: this.good,});
+        await updateDoc(Ref, { good: this.good });
       } catch (e) {
         alert("Error adding document: ", e);
       }
-      this.create();
+
+      onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
+        const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+        console.log(source, " data: ", doc.data().good);
+        this.good = doc.data().good
+      });
+
+      console.log(this.good)
+      //this.create();
     },
+
+    // async listen() {
+    //   onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
+    //     const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+    //     console.log(source, " data: ", doc.data());
+    //   });
+    // },
   },
 };
 </script>
