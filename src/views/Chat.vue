@@ -18,9 +18,9 @@
           </v-avatar>
         </v-badge>
       </v-col>
-      {{ data._document.data.value.mapValue.fields.name.stringValue }}
+      {{ data.data().name }}
       <br />
-      {{ data._document.data.value.mapValue.fields.message.stringValue }}
+      {{ data.data().message }}
       <span @click="deleteMessage(i)">[X]</span>
     </v-card>
     <v-btn @click="addMessage">send to firebase</v-btn>
@@ -50,7 +50,7 @@ export default {
       datas: [],
       data_array: [],
       name: "",
-      url:null,
+      url: null,
     };
   },
 
@@ -60,17 +60,17 @@ export default {
 
     const auth = getAuth();
     const user = auth.currentUser;
-    const uid = user.uid
+    const uid = user.uid;
     const docRef = doc(db, "users", user.uid);
     const docS = await getDoc(docRef);
-    this.name = docS._document.data.value.mapValue.fields.name.stringValue;
+    this.name = docS.data().name;
     console.log(this.name);
 
-     const storage = getStorage();
-        await getDownloadURL(ref(storage, uid + "/" + "avatar")).then((url) => {
-          //リアクティブにするには直接代入はダメ
-          this.url = url
-        });
+    const storage = getStorage();
+    await getDownloadURL(ref(storage, uid + "/" + "avatar")).then((url) => {
+      //リアクティブにするには直接代入はダメ
+      this.url = url;
+    });
   },
 
   methods: {

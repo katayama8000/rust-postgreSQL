@@ -12,9 +12,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <router-link to="/register"
-          ><v-btn class="text-center">新規登録</v-btn></router-link
-        >
+        <router-link to="/register"><v-btn class="text-center">新規登録</v-btn></router-link>
       </v-col>
     </v-row>
   </v-container>

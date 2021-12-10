@@ -53,12 +53,10 @@ export default {
 
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
-    this.name = docSnap._document.data.value.mapValue.fields.name.stringValue;
-    this.university =
-      docSnap._document.data.value.mapValue.fields.university.stringValue;
-    this.major = docSnap._document.data.value.mapValue.fields.major.stringValue;
-    this.explain =
-      docSnap._document.data.value.mapValue.fields.explain.stringValue;
+    this.name = docSnap.data().name;
+    this.university = docSnap.data().university;
+    this.major = docSnap.data().major;
+    this.explain = docSnap.data().explain;
 
      const storage = getStorage();
         await getDownloadURL(ref(storage, uid + "/" + "avatar")).then((url) => {

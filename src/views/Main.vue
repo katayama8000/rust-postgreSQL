@@ -17,16 +17,9 @@
       <v-col cols="3" v-for="(data, index) in datas" :key="index">
         <v-card>
           <v-card-title class="headline"
-            >{{
-              data._document.data.value.mapValue.fields.textName.stringValue
-            }}
-            ({{
-              data._document.data.value.mapValue.fields.uniName.stringValue
-            }})</v-card-title
+            >{{ data.data().textName }}({{ data.data().uniName }})</v-card-title
           >
-          <v-card-subtitle>{{
-            data._document.data.value.mapValue.fields.major.stringValue
-          }}</v-card-subtitle>
+          <v-card-subtitle>{{ data.data().major }}</v-card-subtitle>
           <v-divider class="mx-3"></v-divider>
           <v-card-text>
             <!--------------------------------- image ------------------------------------------>
@@ -38,11 +31,13 @@
             <v-btn class="mx-2" fab dark small color="pink">
               <v-icon dark @click="addheart(index)"> mdi-heart</v-icon>
             </v-btn>
-            {{ data._document.data.value.mapValue.fields.good.integerValue }}
+            {{ data.data().good }}
           </v-card-actions>
         </v-card>
+        {{data.add}}
       </v-col>
     </v-row>
+    {{ good }}
   </v-container>
 </template>
 
@@ -56,6 +51,7 @@ import { db } from "../main.js";
 import { getStorage, ref } from "firebase/storage";
 import { getDownloadURL } from "firebase/storage";
 import { onSnapshot } from "firebase/firestore";
+import { query } from "firebase/firestore";
 export default {
   name: "app",
   data() {
@@ -77,6 +73,24 @@ export default {
     //     console.log(source, " data: ", doc.data().good);
     //     //this.good = doc.data().good
     //   });
+  },
+
+  mounted() {
+    onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
+      const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+      console.log(source, " data: ", doc.data().good);
+      this.good = doc.data().good;
+      //this.$set(this.good, doc.data().good);
+    });
+
+    const q = query(collection(db, "text"));
+    onSnapshot(q, (querySnapshot) => {
+    const cities = [];
+    querySnapshot.forEach((doc) => {
+       cities.push(doc.data().good);
+    });
+       console.log("hello:", cities);
+    });
   },
 
   computed: {},
@@ -103,13 +117,15 @@ export default {
       //image取得 uidとfileNameが必要
 
       for (let data of this.datas) {
-        let fileName = data._document.data.value.mapValue.fields.fileName.stringValue;
-        let uid = data._document.data.value.mapValue.fields.userID.stringValue;
+        console.log(data.data().fileName);
+        let fileName = data.data().fileName;
+        let uid = data.data().userID;
         const storage = getStorage();
         await getDownloadURL(ref(storage, uid + "/" + fileName)).then((url) => {
           //リアクティブにするには直接代入はダメ
           this.$set(data, "url", url);
         });
+        this.$set(data, "heart", this.good);
       }
 
       let i = 0;
@@ -120,24 +136,25 @@ export default {
     },
 
     async addheart(index) {
-      this.good = 0;
+      //this.good = 0;
       const Ref = doc(db, "text", this.id[index]);
       console.log("index", this.id[index]);
       try {
-        this.good =this.datas[index]._document.data.value.mapValue.fields.good.integerValue;
+        //this.good = this.datas[index].data().good;
         this.good++;
         await updateDoc(Ref, { good: this.good });
+        this.$set(this.datas[index], "add" , this.good);
       } catch (e) {
         alert("Error adding document: ", e);
       }
 
-      onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
-        const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-        console.log(source, " data: ", doc.data().good);
-        this.good = doc.data().good
-      });
+      // onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
+      //   const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+      //   console.log(source, " data: ", doc.data().good);
+      //   this.good = doc.data().good;
+      // });
 
-      console.log(this.good)
+      console.log(this.good);
       //this.create();
     },
 
