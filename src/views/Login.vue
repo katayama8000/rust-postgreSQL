@@ -19,15 +19,13 @@
           v-model="password"
         />
         <v-row>
-        <v-btn class="info" @click="submit">ログイン</v-btn>
-        <v-spacer></v-spacer>
-        <span>登録していない方はこちら → </span>
-        <v-btn><router-link to="/register">新規登録</router-link></v-btn>
-
+          <v-btn class="info" @click="submit">ログイン</v-btn>
+          <v-spacer></v-spacer>
+          <span>登録していない方はこちら → </span>
+          <v-btn><router-link to="/register">新規登録</router-link></v-btn>
         </v-row>
       </v-form>
     </v-card-text>
-   
   </v-card>
 </template>
 
@@ -42,9 +40,11 @@ export default {
     };
   },
   methods: {
-
     submit() {
-      this.$store.dispatch("login",{email:this.email, password:this.password })
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password,
+      });
       // const auth = getAuth();
       // signInWithEmailAndPassword(auth, this.email, this.password)
       //   .then((userCredential) => {
@@ -60,7 +60,7 @@ export default {
       //     const errorMessage = error.message;
       //     alert(errorMessage);
       //   });
-     },
+    },
   },
 };
 </script>

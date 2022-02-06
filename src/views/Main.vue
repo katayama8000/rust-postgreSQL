@@ -76,6 +76,7 @@ export default {
   },
 
   mounted() {
+    //指定されたところ一つ
     onSnapshot(doc(db, "text", "AnrpPw5zb7yPlpWZocgF"), (doc) => {
       const source = doc.metadata.hasPendingWrites ? "Local" : "Server";
       console.log(source, " data: ", doc.data().good);
@@ -83,13 +84,16 @@ export default {
       //this.$set(this.good, doc.data().good);
     });
 
+    //textすべてを見れる
     const q = query(collection(db, "text"));
     onSnapshot(q, (querySnapshot) => {
-    const cities = [];
+    //const cities = [];
+    let i = 0
     querySnapshot.forEach((doc) => {
-       cities.push(doc.data().good);
+      this.$set(this.datas[i], "add" , doc.data().good);
+       i++
     });
-       console.log("hello:", cities);
+       console.log("hello:", this.datas);
     });
   },
 
@@ -142,8 +146,10 @@ export default {
       try {
         //this.good = this.datas[index].data().good;
         this.good++;
-        await updateDoc(Ref, { good: this.good });
-        this.$set(this.datas[index], "add" , this.good);
+        // await updateDoc(Ref, { good: this.good });
+        // this.$set(this.datas[index], "add" , this.good);
+        await updateDoc(Ref, { add: this.good });
+        //this.$set(this.datas[index], "add" , this.good);
       } catch (e) {
         alert("Error adding document: ", e);
       }
