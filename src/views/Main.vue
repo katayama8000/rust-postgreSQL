@@ -93,6 +93,7 @@ export default {
 
 
     async create() {
+      console.log("hello")
       // //textの全データ取得
       const docSnap = await getDocs(collection(db, "text"));
       this.datas = docSnap.docs;
