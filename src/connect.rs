@@ -33,9 +33,9 @@ mod tests {
         let params = ConnectionParams::new(
             "localhost".to_string(),
             5432,
-            "postgres".to_string(),
-            "user".to_string(),
-            "password".to_string(),
+            "mydatabase".to_string(),
+            "myuser".to_string(),
+            "mypassword".to_string(),
         );
         match PostgresClient::connect(&params) {
             Ok(client) => {
