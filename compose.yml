@@ -1,0 +1,21 @@
+services:
+  rust:
+    build:
+      context: ./Docker/Rust
+      dockerfile: Dockerfile
+    restart: always
+    tty: true
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+  postgres:
+    build:
+      context: ./Docker/PostgreSQL
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./Docker/PostgreSQL/init.sql:/docker-entrypoint-initdb.d/init.sql
