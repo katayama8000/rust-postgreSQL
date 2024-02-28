@@ -10,7 +10,6 @@ pub struct ConnectionParams {
 }
 
 impl ConnectionParams {
-    // 接続文字列を生成する
     pub fn connect_string(&self) -> String {
         format!(
             "host={} port={} dbname={} user={} password={}",
