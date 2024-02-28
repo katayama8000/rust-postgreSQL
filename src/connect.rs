@@ -31,7 +31,7 @@ mod tests {
     #[test]
     fn connect_ok() {
         let params = ConnectionParams::new(
-            "localhost".to_string(),
+            "postgres".to_string(),
             5432,
             "mydatabase".to_string(),
             "myuser".to_string(),

@@ -16,6 +16,6 @@ services:
     env_file:
       - ./.env
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
       - ./Docker/PostgreSQL/init.sql:/docker-entrypoint-initdb.d/init.sql
